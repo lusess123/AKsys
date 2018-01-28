@@ -4,6 +4,4 @@ import * as net from "./net";
 import * as dom from "./Dom";
 import * as vue from "./Vue";
 import * as util from "./Util";
-
-
-export  { core ,ioc,net,dom ,vue,util}
+export { core, ioc, net, dom, vue, util };

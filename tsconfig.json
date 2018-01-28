@@ -15,7 +15,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata":true ,
     "lib": [ "es6", "dom" ],
-    "outDir": "./js/",
+    "outDir": "./../AKsys/",
     
     // 启用 vuex-class 需要开启此选项
     "strictFunctionTypes": false,
@@ -26,5 +26,8 @@
   },
   "include": [
     "src/**/*.ts"
+],
+"exclude": [
+  "./../Aksys/"
 ]
 }
