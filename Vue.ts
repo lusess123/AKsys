@@ -92,8 +92,8 @@ export const vueTpl =
                       }
                   }
             });
-
-            return _vueObj;
+           const _obj:any = _vueObj ;
+            return _obj;
         }
 
 export const com = function (vue: any,{ components }= {components:undefined} ) {

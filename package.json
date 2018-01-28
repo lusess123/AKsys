@@ -2,11 +2,13 @@
   "name": "aksys",
   "version": "1.0.4",
   "description": "前端框架的核心模块",
-  "main": "./index.js",
-  "types": "./index.ts",
+  "main": "./sys.js",
+  "types": "./sys.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc"
+    "tsc": " tsc",
+    "clean_js": " shx  find . -name  \"*.js\"  | xargs rm -f ",
+    "deljs":"shx rm sys.js"
   },
   "repository": {
     "type": "git",
@@ -22,11 +24,14 @@
     "axios": "^0.17.1",
     "iview": "^2.9.0",
     "js-cookie": "^2.2.0",
+    "path": "^0.12.7",
     "rxjs": "^5.5.6",
     "vue": "^2.5.13",
     "vue-axios": "^2.0.2"
   },
   "devDependencies": {
+    "npm-run-all": "^4.1.2",
+    "shx": "^0.2.2",
     "typescript": "^2.6.2"
   }
 }
