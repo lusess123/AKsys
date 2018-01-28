@@ -1,7 +1,7 @@
 import {ICom} from "./ICom";
-import { core ,ioc,vue,util } from "sys";
-import eventBus ,{ fetchEvent} from "sys/event";
-import { IEvent } from "sys/event/IEvent";
+import { core ,ioc,vue,util } from "./../index";
+import eventBus ,{ fetchEvent} from "./../event";
+import { IEvent } from "./../event/IEvent";
 import Vue from "vue";
 
 export interface IBaseComConfig
