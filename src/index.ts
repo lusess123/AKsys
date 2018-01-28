@@ -7,4 +7,13 @@ import * as util from "./Util";
 
 
 export  { core ,ioc,net,dom ,vue,util}
-import "./com";
+export * from "./com";
+export * from "./com/BaseCom";
+export * from "./com/ICom";
+export * from "./event"
+export * from "./event/IEvent"
+export * from "./event/VueEvent"
+
+export * from "./net"
+export * from "./net/code"
+export * from "./net/net"
