@@ -1,6 +1,6 @@
 {
   "name": "aksys",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "前端框架的核心模块",
   "main": "index.js",
   "scripts": {

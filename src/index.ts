@@ -7,3 +7,4 @@ import * as util from "./Util";
 
 
 export  { core ,ioc,net,dom ,vue,util}
+import "./com";
