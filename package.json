@@ -1,14 +1,16 @@
 {
   "name": "aksys",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "前端框架的核心模块",
   "main": "./js/index.js",
   "types": "./js/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": " tsc",
-    "clean_js": " shx  find . -name  \"*.js\"  | xargs rm -f ",
-    "deljs":"shx rm sys.js"
+    "clean_js": " find .  -name  \"*.js\"  -o -name \"*.d.ts\" -o -name \"com\"  -o -name \"event\"  -o -name \"net\" -o -name \"js\"   |grep -v \"src/\" |grep -v \"node_modules/\" | xargs rm -rf",
+    "deljs":"shx rm -rf js",
+    "copy":"shx mv  ./js/*  .",
+    "build":"npm-run-all  clean_js tsc copy deljs "
   },
   "repository": {
     "type": "git",
