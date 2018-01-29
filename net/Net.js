@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -42,131 +41,142 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
-var core = require("./../Core");
-var code_1 = require("./code");
-/**
- * Created by nihilism on 03/06/2017.
- */
-var vue_1 = require("vue");
-//import axios from 'axios'
-var vue_axios_1 = require("vue-axios");
-// load iview-ui components for notifying
-var iview_1 = require("iview");
-// load config
-//import config from '@/requests/base'
-// load locale message template
-//import Message from '@/locale/zh_CN'
-// load http status config
-//import HTTP_STATUS from '@/requests/code'
-vue_1.default.use(vue_axios_1.default, axios_1.default);
-axios_1.default.defaults.baseURL = 'http://172.16.134.2:11536';
-axios_1.default.defaults.withCredentials = true;
-axios_1.default.defaults.timeout = 120000;
-// axios.defaults.xsrfCookieName = '_xsrf'
-// axios.defaults.xsrfHeaderName = 'X-Xsrftoken'
-// `onDownloadProgress` allows handling of progress events for download
-axios_1.default.defaults.onDownloadProgress = function (progressEvent) {
-    // Do whatever you want with the native progress event
-};
-// interceptor
-axios_1.default.interceptors.request.use(function (config) {
-    iview_1.default.LoadingBar.start();
-    return config;
-}, function (error) {
-    return Promise.reject(error);
-});
-axios_1.default.interceptors.response.use(function (resp) {
-    // debugger ;
-    if (resp.data.code !== undefined && resp.data.code !== code_1.default.OK) {
-        iview_1.default.Message.error({
-            content: resp.data.msg,
-            closable: true,
-            duration: 5
-        });
-        iview_1.default.LoadingBar.finish();
-        return Promise.reject(resp.data);
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
     }
-    iview_1.default.LoadingBar.finish();
-    return resp;
-}, function (error) {
-    //debugger ;
-    iview_1.default.LoadingBar.finish();
-    if (error.response.status === code_1.default.UNAUTHORIZED) {
-        iview_1.default.Message.warning({
-            content: "您未认证或者未登录，即将跳转到登录界面",
-            duration: 1.5,
-            onClose: function () { }
-        });
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "axios", "./../Core", "./code", "vue", "vue-axios", "iview"], factory);
     }
-    else {
-        var errorText = '';
-        switch (error.response.status) {
-            case 500:
-                errorText = '服务器内部错误';
-                break;
-            case 403:
-                errorText = '禁止访问';
-                break;
-            case 404:
-                errorText = '请求的api不存在';
-                break;
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var axios_1 = require("axios");
+    var core = require("./../Core");
+    var code_1 = require("./code");
+    /**
+     * Created by nihilism on 03/06/2017.
+     */
+    var vue_1 = require("vue");
+    //import axios from 'axios'
+    var vue_axios_1 = require("vue-axios");
+    // load iview-ui components for notifying
+    var iview_1 = require("iview");
+    // load config
+    //import config from '@/requests/base'
+    // load locale message template
+    //import Message from '@/locale/zh_CN'
+    // load http status config
+    //import HTTP_STATUS from '@/requests/code'
+    vue_1.default.use(vue_axios_1.default, axios_1.default);
+    axios_1.default.defaults.baseURL = 'http://172.16.134.2:11536';
+    axios_1.default.defaults.withCredentials = true;
+    axios_1.default.defaults.timeout = 120000;
+    // axios.defaults.xsrfCookieName = '_xsrf'
+    // axios.defaults.xsrfHeaderName = 'X-Xsrftoken'
+    // `onDownloadProgress` allows handling of progress events for download
+    axios_1.default.defaults.onDownloadProgress = function (progressEvent) {
+        // Do whatever you want with the native progress event
+    };
+    // interceptor
+    axios_1.default.interceptors.request.use(function (config) {
+        iview_1.default.LoadingBar.start();
+        return config;
+    }, function (error) {
+        return Promise.reject(error);
+    });
+    axios_1.default.interceptors.response.use(function (resp) {
+        // debugger ;
+        if (resp.data.code !== undefined && resp.data.code !== code_1.default.OK) {
+            iview_1.default.Message.error({
+                content: resp.data.msg,
+                closable: true,
+                duration: 5
+            });
+            iview_1.default.LoadingBar.finish();
+            return Promise.reject(resp.data);
         }
-        iview_1.default.Message.error({
-            content: error.response.data.description || errorText,
-            closable: true,
-            duration: 5
+        iview_1.default.LoadingBar.finish();
+        return resp;
+    }, function (error) {
+        //debugger ;
+        iview_1.default.LoadingBar.finish();
+        if (error.response.status === code_1.default.UNAUTHORIZED) {
+            iview_1.default.Message.warning({
+                content: "您未认证或者未登录，即将跳转到登录界面",
+                duration: 1.5,
+                onClose: function () { }
+            });
+        }
+        else {
+            var errorText = '';
+            switch (error.response.status) {
+                case 500:
+                    errorText = '服务器内部错误';
+                    break;
+                case 403:
+                    errorText = '禁止访问';
+                    break;
+                case 404:
+                    errorText = '请求的api不存在';
+                    break;
+            }
+            iview_1.default.Message.error({
+                content: error.response.data.description || errorText,
+                closable: true,
+                duration: 5
+            });
+        }
+        return Promise.reject(error);
+    });
+    var _ajax = function (_a) {
+        var url = _a.url, params = _a.params, ispost = _a.ispost;
+        return __awaiter(this, void 0, void 0, function () {
+            var _p1, _config;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _config = {
+                            headers: { 'User-Name': 'zhangsan' }
+                        };
+                        if (!ispost) return [3 /*break*/, 2];
+                        return [4 /*yield*/, axios_1.default.post(url, params, _config)];
+                    case 1:
+                        _p1 = _b.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, axios_1.default.get(url, __assign({}, params, _config))];
+                    case 3:
+                        _p1 = _b.sent();
+                        _b.label = 4;
+                    case 4: return [2 /*return*/, new Promise(function (a, b) {
+                            //debugger ;
+                            core.requestHook(_p1, a);
+                        })];
+                }
+            });
         });
-    }
-    return Promise.reject(error);
+    };
+    exports.post = function (_a) {
+        var url = _a.url, params = _a.params;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, _ajax({ url: url, params: params, ispost: 1 })];
+                    case 1: return [2 /*return*/, _b.sent()];
+                }
+            });
+        });
+    };
+    exports.get = function (_a) {
+        var url = _a.url, params = _a.params;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, _ajax({ url: url, params: params, ispost: 0 })];
+                    case 1: return [2 /*return*/, _b.sent()];
+                }
+            });
+        });
+    };
 });
-var _ajax = function (_a) {
-    var url = _a.url, params = _a.params, ispost = _a.ispost;
-    return __awaiter(this, void 0, void 0, function () {
-        var _p1, _config;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _config = {
-                        headers: { 'User-Name': 'zhangsan' }
-                    };
-                    if (!ispost) return [3 /*break*/, 2];
-                    return [4 /*yield*/, axios_1.default.post(url, params, _config)];
-                case 1:
-                    _p1 = _b.sent();
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, axios_1.default.get(url, __assign({}, params, _config))];
-                case 3:
-                    _p1 = _b.sent();
-                    _b.label = 4;
-                case 4: return [2 /*return*/, new Promise(function (a, b) {
-                        //debugger ;
-                        core.requestHook(_p1, a);
-                    })];
-            }
-        });
-    });
-};
-exports.post = function (_a) {
-    var url = _a.url, params = _a.params;
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, _ajax({ url: url, params: params, ispost: 1 })];
-                case 1: return [2 /*return*/, _b.sent()];
-            }
-        });
-    });
-};
-exports.get = function (_a) {
-    var url = _a.url, params = _a.params;
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, _ajax({ url: url, params: params, ispost: 0 })];
-                case 1: return [2 /*return*/, _b.sent()];
-            }
-        });
-    });
-};
