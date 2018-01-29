@@ -33,34 +33,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.loadSys = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                //await loadListForm();
-                // return new Promise((a, b) => {
-                //     //     require.ensure([],function (require) {
-                //     //         require("app");
-                //     //         require("app/listpage/ListForm");
-                //     //          a();
-                //     //  });
-                // });
-                return [2 /*return*/, Promise.all(_BootStrapTasks)];
-            });
+export var loadSys = function () {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            //await loadListForm();
+            // return new Promise((a, b) => {
+            //     //     require.ensure([],function (require) {
+            //     //         require("app");
+            //     //         require("app/listpage/ListForm");
+            //     //          a();
+            //     //  });
+            // });
+            return [2 /*return*/, Promise.all(_BootStrapTasks)];
         });
-    };
-    var _BootStrapTasks = [];
-    exports.addTask = function (p) {
-        _BootStrapTasks.push(p);
-    };
-});
+    });
+};
+var _BootStrapTasks = [];
+export var addTask = function (p) {
+    _BootStrapTasks.push(p);
+};

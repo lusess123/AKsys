@@ -1,109 +1,97 @@
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+import * as domFile from "./Dom";
+export var ErrorCode = {
+    "-1": "SYS_ERR",
+    "0": "NO_ERR",
+    "40400": "NOT_FOUND",
+    "43001": "REQ_MUST_GET",
+    "43002": "REQ_MUST_POST",
+    "44000": "PARAMS_INVALID"
+};
+export var ErrorDesc = {
+    SYS_ERR: "系统繁忙，此时请开发者稍候再试",
+    NO_ERR: "请求成功",
+    NOT_FOUND: "API不存在",
+    REQ_MUST_POST: "需要POST请求",
+    REQ_MUST_HTTPS: "需要HTTPS请求",
+    PARAMS_INVALID: "参数不合法"
+};
+export var requestHook = function (req, callback) {
+    var _reqData = req.data;
+    var _data = _reqData.data;
+    var _error = _reqData.error;
+    if (_error) {
+        var _errorCode = ErrorCode[_error.toString()];
+        if (_errorCode) {
+            var _errorTxt = ErrorDesc[_errorCode];
+            domFile.Notify(_errorTxt);
+        }
+        else {
+            domFile.Notify("未知错误");
+        }
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Dom"], factory);
+    else {
+        callback(_data);
     }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var domFile = require("./Dom");
-    exports.ErrorCode = {
-        "-1": "SYS_ERR",
-        "0": "NO_ERR",
-        "40400": "NOT_FOUND",
-        "43001": "REQ_MUST_GET",
-        "43002": "REQ_MUST_POST",
-        "44000": "PARAMS_INVALID"
-    };
-    exports.ErrorDesc = {
-        SYS_ERR: "系统繁忙，此时请开发者稍候再试",
-        NO_ERR: "请求成功",
-        NOT_FOUND: "API不存在",
-        REQ_MUST_POST: "需要POST请求",
-        REQ_MUST_HTTPS: "需要HTTPS请求",
-        PARAMS_INVALID: "参数不合法"
-    };
-    exports.requestHook = function (req, callback) {
-        var _reqData = req.data;
-        var _data = _reqData.data;
-        var _error = _reqData.error;
-        if (_error) {
-            var _errorCode = exports.ErrorCode[_error.toString()];
-            if (_errorCode) {
-                var _errorTxt = exports.ErrorDesc[_errorCode];
-                domFile.Notify(_errorTxt);
+};
+export var json = function (obj) {
+    return JSON.stringify(obj);
+};
+export var parseJson = function (str) {
+    return JSON.parse(str);
+};
+export var alert = function (msg) {
+    if (typeof (msg) == "object") {
+        alertObj(msg);
+    }
+    else
+        window["alert"](msg);
+};
+export var notify = function (mesg) {
+    domFile.Notify(mesg);
+};
+export var alertObj = function (obj) {
+    alert(json(obj));
+};
+export var pureObj = function (obj) {
+    var _str = json(obj);
+    return parseJson(_str);
+};
+var UniId = 0;
+export var getUniId = function () {
+    return (UniId++).toString();
+};
+export var cast = function (obj) {
+    var _res = obj;
+    return _res;
+};
+export var log = function (a, _a) {
+    var _b = _a === void 0 ? { sign: "", info: "" } : _a, sign = _b.sign, info = _b.info;
+    //let sign = config.sign ;
+    //let info = config.sign ;
+    info = info + "\r\n" + new Date();
+    if (Options.IsDev) {
+        if (typeof (a) == "object") {
+            a = json(a);
+        }
+        if (sign) {
+            if (Options.Point[sign]) {
+                alert(info + "\r\n" + a);
             }
             else {
-                domFile.Notify("未知错误");
+                console.log(info);
+                console.log(a);
             }
         }
         else {
-            callback(_data);
+            alert(info + "\r\n" + a);
         }
-    };
-    exports.json = function (obj) {
-        return JSON.stringify(obj);
-    };
-    exports.parseJson = function (str) {
-        return JSON.parse(str);
-    };
-    exports.alert = function (msg) {
-        if (typeof (msg) == "object") {
-            exports.alertObj(msg);
-        }
-        else
-            window["alert"](msg);
-    };
-    exports.notify = function (mesg) {
-        domFile.Notify(mesg);
-    };
-    exports.alertObj = function (obj) {
-        exports.alert(exports.json(obj));
-    };
-    exports.pureObj = function (obj) {
-        var _str = exports.json(obj);
-        return exports.parseJson(_str);
-    };
-    var UniId = 0;
-    exports.getUniId = function () {
-        return (UniId++).toString();
-    };
-    exports.cast = function (obj) {
-        var _res = obj;
-        return _res;
-    };
-    exports.log = function (a, _a) {
-        var _b = _a === void 0 ? { sign: "", info: "" } : _a, sign = _b.sign, info = _b.info;
-        //let sign = config.sign ;
-        //let info = config.sign ;
-        info = info + "\r\n" + new Date();
-        if (exports.Options.IsDev) {
-            if (typeof (a) == "object") {
-                a = exports.json(a);
-            }
-            if (sign) {
-                if (exports.Options.Point[sign]) {
-                    exports.alert(info + "\r\n" + a);
-                }
-                else {
-                    console.log(info);
-                    console.log(a);
-                }
-            }
-            else {
-                exports.alert(info + "\r\n" + a);
-            }
-        }
-        else {
-            console.log(info);
-            console.log(a);
-        }
-    };
-    exports.Options = {
-        IsDev: true,
-        Point: {}
-    };
-});
+    }
+    else {
+        console.log(info);
+        console.log(a);
+    }
+};
+export var Options = {
+    IsDev: true,
+    Point: {}
+};
