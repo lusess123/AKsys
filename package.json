@@ -1,9 +1,9 @@
 {
   "name": "sys",
-  "version": "1.1.4",
+  "version": "1.1.6",
   "description": "前端框架的核心模块",
-  "main": "./js/index.js",
-  "types": "./js/index",
+  "main": "./index.js",
+  "types": "./index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": " tsc",
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/lusess123/AKsys.git"
   },
-  "author": "",
+  "author": "zhengyukun@lvwan.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lusess123/AKsys/issues"
