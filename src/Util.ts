@@ -56,3 +56,7 @@ export function formatDate (date,  fmt) {
     return fmt
   }
 
+  export function getTimeCodeFromDate(d:Date) :number {
+      return Math.round(d.getTime()/1000);
+  }
+
