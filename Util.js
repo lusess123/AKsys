@@ -50,3 +50,6 @@ export function formatDate(date, fmt) {
     }
     return fmt;
 }
+export function getTimeCodeFromDate(d) {
+    return Math.round(d.getTime() / 1000);
+}
