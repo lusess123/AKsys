@@ -78,6 +78,13 @@ export const vueTpl =
                 renderError:  (h:any, err)=> {
                     return h('pre', {title:err.stack, style: { color: 'red' }}, err.stack);
                   },
+                  beforeCreated:function(){
+                    this.vm.$store = this.$store ;
+                  },
+
+                  created:function(){
+                    this.vm.$store = this.$store ;
+                  },
                    
                  beforeUpdate:function(){
                       this.vm.$store = this.$store ;
