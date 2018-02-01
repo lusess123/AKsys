@@ -78,13 +78,13 @@ export const vueTpl =
                     return h('pre', {title:err.stack, style: { color: 'red' }}, err.stack);
                   },
                    
-                 beforeUpdate:function(){
-                      this.vm.$store = this.$store ;
-                 },
+                //  beforeUpdate:function(){
+                //       this.vm.$store = this.$store ;
+                //  },
 
                   mounted: function () {
                      // alert("控件完成了");
-                     this.vm.$store = this.$store ;
+                    //  this.vm.$store = this.$store ;
                       if(this.$props.vm){
                           if(this.$props.vm.getEvent){
                               const _event = this.$props.vm.getEvent();
