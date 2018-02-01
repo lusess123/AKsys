@@ -1,6 +1,6 @@
 {
   "name": "@lvwan/aksys01",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "前端框架的核心模块",
   "main": "./index.js",
   "types": "./index",

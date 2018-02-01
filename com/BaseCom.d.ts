@@ -7,6 +7,7 @@ export interface IFunDic {
     [name: string]: Function;
 }
 export declare class BaseCom implements ICom {
+    $store: any;
     _VueObj: any;
     UniId: string;
     private fIsShow;

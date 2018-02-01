@@ -30,6 +30,7 @@ export interface IFunDic
 `)
 export class BaseCom implements ICom
 {
+    $store:any ;
     _VueObj : any ;
     UniId :string ;
     private fIsShow : boolean = false ;
