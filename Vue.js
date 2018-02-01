@@ -60,9 +60,10 @@ export var registAndGetVueComName = function (vm, vueObj) {
     Vue.component(_name, vueObj);
     return _name;
 };
-export var vueTpl = function (name, components) {
+export var vueTpl = function (name, components, comOpt) {
     return function (tpl) {
-        var _vueObj = Vue.extend({
+        //  const _vueObj = Vue.extend(
+        var _vueOpt = {
             name: name,
             props: ["vm"],
             template: tpl,
@@ -88,24 +89,28 @@ export var vueTpl = function (name, components) {
                     }
                 }
             }
-        });
-        var _obj = _vueObj;
+        };
+        comOpt = comOpt ? comOpt : {};
+        comOpt = __assign({}, _vueOpt, comOpt);
+        //  );
+        var _obj = Vue.extend(comOpt);
         return _obj;
     };
 };
-export var com = function (vue, _a) {
-    var components = (_a === void 0 ? { components: undefined } : _a).components;
+export var com = function (vue, comOpt) {
+    if (comOpt === void 0) { comOpt = {}; }
     return function (constructor) {
         //debugger ;
+        var components = comOpt.components;
         var _type = typeof (vue);
         if (_type == "function")
             constructor["_vueObj"] = vue;
         else {
             if (_type == "string")
-                constructor["_vueObj"] = vueTpl(util.getFunName(constructor) + core.getUniId(), components)(vue);
+                constructor["_vueObj"] = vueTpl(util.getFunName(constructor) + core.getUniId(), components, comOpt)(vue);
             else {
                 var _base = { name: "com" + core.getUniId(), props: ["vm"] };
-                constructor["_vueObj"] = Vue.extend(__assign({}, _base, vue));
+                constructor["_vueObj"] = Vue.extend(__assign({}, _base, vue, comOpt));
             }
         }
     };
