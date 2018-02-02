@@ -76,6 +76,29 @@ var BaseCom = /** @class */ (function () {
             .GetAppEvent()).emit.apply(_a, [name + sign].concat(args));
         var _a;
     };
+    BaseCom.prototype.pRegisterModule = function (module) {
+        if (this.$store) {
+            if (this.$store.state[this.UniId]) {
+                core.alert("该模块已经注册过了");
+            }
+            else
+                this.$store.registerModule(this.UniId, module);
+        }
+    };
+    BaseCom.prototype.pUnRegisterModule = function () {
+        if (this.$store) {
+            //unregisterModule
+            if (this.$store.state[this.UniId]) {
+                this.$store.unregisterModule(this.UniId);
+            }
+        }
+    };
+    BaseCom.prototype.pDispose = function () {
+        this.pUnRegisterModule();
+    };
+    BaseCom.prototype.dispose = function () {
+        this.pDispose();
+    };
     BaseCom = __decorate([
         ioc.PlugIn({ BaseType: "ICom", RegName: "BaseCom" }),
         vue.com("\n<div>\n<Card>\n  <p slot=\"title\"   @click=\"vm.toogleShow()\"  >\n        <a>{{vm.getConstructName()}}   <Icon type=\"android-happy\" color=\"green\"></Icon>\n        </a>\n  </p>\n  <div   v-if=\"vm.fIsShow\"    >   {{vm.renderString()}} </div>\n</Card>\n</div>\n"),

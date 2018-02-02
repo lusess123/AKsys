@@ -24,4 +24,8 @@ export declare class BaseCom implements ICom {
     render(): string;
     protected listenAppEvent(name: string, uniId: string, fun: Function): void;
     protected emitAppEvent(name: string, sign: string, ...args: any[]): void;
+    protected pRegisterModule(module: any): void;
+    protected pUnRegisterModule(): void;
+    protected pDispose(): void;
+    dispose(): void;
 }
