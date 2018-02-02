@@ -99,6 +99,57 @@ var BaseCom = /** @class */ (function () {
     BaseCom.prototype.dispose = function () {
         this.pDispose();
     };
+    /**
+     * 获取当前页面的模块
+     *
+     * @returns
+     * @memberof BaseCom
+     */
+    BaseCom.prototype.getModuleState = function () {
+        if (this.$store && this.$store.state[this.UniId]) {
+            return this.$store.state[this.UniId];
+        }
+    };
+    /**
+     * 获取计算属性
+     *
+     * @param {string} name
+     * @returns
+     * @memberof BaseCom
+     */
+    BaseCom.prototype.getGetters = function (name) {
+        if (this.$store) {
+            if (name)
+                return this.$store.getters[name];
+            else {
+                return this.$store.getters;
+            }
+        }
+    };
+    /**
+     * 提交数据
+     *
+     * @param {string} name
+     * @param {*} obj
+     * @memberof BaseCom
+     */
+    BaseCom.prototype.commit = function (name, obj) {
+        if (this.$store) {
+            this.$store.commit(name, obj);
+        }
+    };
+    /**
+     * 分发数据
+     *
+     * @param {string} name
+     * @param {*} obj
+     * @memberof BaseCom
+     */
+    BaseCom.prototype.dispatch = function (name, obj) {
+        if (this.$store) {
+            this.$store.dispatch(name, obj);
+        }
+    };
     BaseCom = __decorate([
         ioc.PlugIn({ BaseType: "ICom", RegName: "BaseCom" }),
         vue.com("\n<div>\n<Card>\n  <p slot=\"title\"   @click=\"vm.toogleShow()\"  >\n        <a>{{vm.getConstructName()}}   <Icon type=\"android-happy\" color=\"green\"></Icon>\n        </a>\n  </p>\n  <div   v-if=\"vm.fIsShow\"    >   {{vm.renderString()}} </div>\n</Card>\n</div>\n"),

@@ -6,4 +6,8 @@ export interface ICom {
     forceUpdate(): any;
     getEvent(): IEvent;
     dispose(): any;
+    getModuleState(): any;
+    getGetters(name: string): any;
+    commit(name: string, obj: any): any;
+    dispatch(name: string, obj: any): any;
 }
