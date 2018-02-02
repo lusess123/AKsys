@@ -8,5 +8,8 @@ export interface ICom
     forceUpdate();
     getEvent():IEvent;
     dispose();
-
+    getModuleState():any ;
+    getGetters(name:string):any ;
+    commit(name:string,obj:any);
+    dispatch(name:string,obj:any);
 }

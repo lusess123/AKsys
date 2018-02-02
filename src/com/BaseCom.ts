@@ -134,6 +134,57 @@ export class BaseCom implements ICom {
     public dispose() {
         this.pDispose();
     }
+    /**
+     * 获取当前页面的模块
+     * 
+     * @returns 
+     * @memberof BaseCom
+     */
+    getModuleState(){
+        if(this.$store && this.$store.state[this.UniId]){
+            return this.$store.state[this.UniId];
+        } 
+    }
+    /**
+     * 获取计算属性
+     * 
+     * @param {string} name 
+     * @returns 
+     * @memberof BaseCom
+     */
+    getGetters(name:string){
+        if(this.$store){
+            if(name)
+              return this.$store.getters[name] ;
+              else {
+                  return this.$store.getters ;
+              }
+        }
+    }
+   /**
+    * 提交数据
+    * 
+    * @param {string} name 
+    * @param {*} obj 
+    * @memberof BaseCom
+    */
+   commit(name:string,obj:any){
+         if(this.$store){
+             this.$store.commit(name,obj);
+         }
+    }
+    /**
+     * 分发数据
+     * 
+     * @param {string} name 
+     * @param {*} obj 
+     * @memberof BaseCom
+     */
+    dispatch(name:string,obj:any){
+        if(this.$store){
+            this.$store.dispatch(name,obj);
+        }
+    }
 
 
 }
