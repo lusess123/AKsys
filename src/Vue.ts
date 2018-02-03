@@ -24,7 +24,7 @@ export const tpl = h =>
 export const vm = (objPro :string)=>{
 
    return `
-       <temple   v-if="vm.${objPro}"  :is="vm.${objPro}.render()"  :vm="vm.${objPro}"></temple>
+       <temple   v-if="vm.${objPro} && vm.${objPro}.render"  :is="vm.${objPro}.render()"  :vm="vm.${objPro}"></temple>
    `; 
 }
 

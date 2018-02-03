@@ -24,7 +24,7 @@ export var tpl = function (h) {
     };
 };
 export var vm = function (objPro) {
-    return "\n       <temple   v-if=\"vm." + objPro + "\"  :is=\"vm." + objPro + ".render()\"  :vm=\"vm." + objPro + "\"></temple>\n   ";
+    return "\n       <temple   v-if=\"vm." + objPro + " && vm." + objPro + ".render\"  :is=\"vm." + objPro + ".render()\"  :vm=\"vm." + objPro + "\"></temple>\n   ";
 };
 export var registAndGetVueComName = function (vm, vueObj) {
     //debugger ;
