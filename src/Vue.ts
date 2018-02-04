@@ -136,6 +136,41 @@ export const com = function (vue: any,comOpt:any = {} ) {
     }
 }
 
+export const compute  =  function () {
+    return function (constructor: Function, propertyKey: string, descriptor: PropertyDescriptor) {
+            //descriptor.configurable = value;
+            const _baseVue = constructor["_vueObj"];
+            if(_baseVue){
+                //constructor["_vueObj"]  = 
+                constructor["_vueObj"] =_baseVue.extend({
+                          computed:{
+                               [propertyKey]:function(){
+                                  return  this.vm[propertyKey];
+                              }
+                            }
+                });
+                
+                // = {
+                //     extends: _baseVue,
+                //     computed:{
+                //               [propertyKey]:function(){
+                //                   return  this.vm[propertyKey];
+                //               }
+                //     }
+                //   }
+            } 
+    };
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

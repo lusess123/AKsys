@@ -121,3 +121,28 @@ export var com = function (vue, comOpt) {
         }
     };
 };
+export var compute = function () {
+    return function (constructor, propertyKey, descriptor) {
+        //descriptor.configurable = value;
+        var _baseVue = constructor["_vueObj"];
+        if (_baseVue) {
+            //constructor["_vueObj"]  = 
+            constructor["_vueObj"] = _baseVue.extend({
+                computed: (_a = {},
+                    _a[propertyKey] = function () {
+                        return this.vm[propertyKey];
+                    },
+                    _a)
+            });
+            // = {
+            //     extends: _baseVue,
+            //     computed:{
+            //               [propertyKey]:function(){
+            //                   return  this.vm[propertyKey];
+            //               }
+            //     }
+            //   }
+        }
+        var _a;
+    };
+};
