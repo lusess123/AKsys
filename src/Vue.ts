@@ -121,6 +121,7 @@ export const vueTpl =
 export const com = function (vue: any,comOpt:any = {} ) {
     return function (constructor: Function) {
         //debugger ;
+        comOpt = { ...comOpt,...{extends:constructor["_vueObj"]}};
         const  components =  comOpt.components ;
         const _type = typeof (vue);
         if (_type == "function")
@@ -136,29 +137,24 @@ export const com = function (vue: any,comOpt:any = {} ) {
     }
 }
 
-export const compute  =  function () {
-    return function (constructor: Function, propertyKey: string, descriptor: PropertyDescriptor) {
-            //descriptor.configurable = value;
-            const _baseVue = constructor["_vueObj"];
-            if(_baseVue){
-                //constructor["_vueObj"]  = 
-                constructor["_vueObj"] =_baseVue.extend({
-                          computed:{
-                               [propertyKey]:function(){
-                                  return  this.vm[propertyKey];
-                              }
-                            }
-                });
+export const compute  =  function (name?:string ) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        const _baseVue = target.constructor["_vueObj"];
+        if(_baseVue){
+            //constructor["_vueObj"]  = 
+            target.constructor["_vueObj"] ={
+                      computed:{
+                           [name?name:propertyKey]:function(){
+                              return  this.vm[propertyKey];
+                          }
+                        },
+                        
+                        extends:_baseVue
+
+                    };
+            
                 
-                // = {
-                //     extends: _baseVue,
-                //     computed:{
-                //               [propertyKey]:function(){
-                //                   return  this.vm[propertyKey];
-                //               }
-                //     }
-                //   }
-            } 
+        }
     };
 }
 
