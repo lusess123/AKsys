@@ -107,6 +107,7 @@ export var com = function (vue, comOpt) {
     if (comOpt === void 0) { comOpt = {}; }
     return function (constructor) {
         //debugger ;
+        comOpt = __assign({}, comOpt, { extends: constructor["_vueObj"] });
         var components = comOpt.components;
         var _type = typeof (vue);
         if (_type == "function")
@@ -121,27 +122,19 @@ export var com = function (vue, comOpt) {
         }
     };
 };
-export var compute = function () {
-    return function (constructor, propertyKey, descriptor) {
-        //descriptor.configurable = value;
-        var _baseVue = constructor["_vueObj"];
+export var compute = function (name) {
+    return function (target, propertyKey, descriptor) {
+        var _baseVue = target.constructor["_vueObj"];
         if (_baseVue) {
             //constructor["_vueObj"]  = 
-            constructor["_vueObj"] = _baseVue.extend({
+            target.constructor["_vueObj"] = {
                 computed: (_a = {},
-                    _a[propertyKey] = function () {
+                    _a[name ? name : propertyKey] = function () {
                         return this.vm[propertyKey];
                     },
-                    _a)
-            });
-            // = {
-            //     extends: _baseVue,
-            //     computed:{
-            //               [propertyKey]:function(){
-            //                   return  this.vm[propertyKey];
-            //               }
-            //     }
-            //   }
+                    _a),
+                extends: _baseVue
+            };
         }
         var _a;
     };
