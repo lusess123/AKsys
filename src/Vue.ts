@@ -138,7 +138,6 @@ export const com = function (vue: any,comOpt:any = {} ) {
     }
 }
 
-<<<<<<< HEAD
 export function  getTempVueName(vueProty : any,name ?:string){
           let _name = name ;
           if(!_name){
@@ -148,7 +147,6 @@ export function  getTempVueName(vueProty : any,name ?:string){
           return _name ;
 }
 
-=======
 export const compute  =  function (name?:string ) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const _baseVue = target.constructor["_vueObj"];
@@ -179,7 +177,6 @@ export const compute  =  function (name?:string ) {
 
 
 
->>>>>>> efd8649d64d38c3c8d85032eb005604f37e41dd0
 
 
 
