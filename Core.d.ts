@@ -27,7 +27,7 @@ export interface ILog {
     info?: string;
     sign?: string;
 }
-export declare const log: (a: any, { sign, info }?: {
+export declare const log: (a: any, {sign, info}?: {
     sign: string;
     info: string;
 }) => void;

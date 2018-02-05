@@ -123,7 +123,6 @@ export var com = function (vue, comOpt) {
         }
     };
 };
-<<<<<<< HEAD
 export function getTempVueName(vueProty, name) {
     var _name = name;
     if (!_name) {
@@ -132,7 +131,6 @@ export function getTempVueName(vueProty, name) {
     _name = _name + event.getUniId();
     return _name;
 }
-=======
 export var compute = function (name) {
     return function (target, propertyKey, descriptor) {
         var _baseVue = target.constructor["_vueObj"];
@@ -150,4 +148,3 @@ export var compute = function (name) {
         var _a;
     };
 };
->>>>>>> efd8649d64d38c3c8d85032eb005604f37e41dd0
