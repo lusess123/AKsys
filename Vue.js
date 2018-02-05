@@ -25,7 +25,7 @@ export var tpl = function (h) {
     };
 };
 export var vm = function (objPro) {
-    return "\n       <temple   v-if=\"vm." + objPro + "\"  :is=\"vm." + objPro + ".render()\"  :vm=\"vm." + objPro + "\"></temple>\n   ";
+    return "\n       <temple   v-if=\"vm." + objPro + " && vm." + objPro + ".render\"  :is=\"vm." + objPro + ".render()\"  :vm=\"vm." + objPro + "\"></temple>\n   ";
 };
 export var registAndGetVueComName = function (vm, vueObj) {
     //debugger ;
@@ -108,6 +108,7 @@ export var com = function (vue, comOpt) {
     if (comOpt === void 0) { comOpt = {}; }
     return function (constructor) {
         //debugger ;
+        comOpt = __assign({}, comOpt, { extends: constructor["_vueObj"] });
         var components = comOpt.components;
         var _type = typeof (vue);
         if (_type == "function")
@@ -122,6 +123,7 @@ export var com = function (vue, comOpt) {
         }
     };
 };
+<<<<<<< HEAD
 export function getTempVueName(vueProty, name) {
     var _name = name;
     if (!_name) {
@@ -130,3 +132,22 @@ export function getTempVueName(vueProty, name) {
     _name = _name + event.getUniId();
     return _name;
 }
+=======
+export var compute = function (name) {
+    return function (target, propertyKey, descriptor) {
+        var _baseVue = target.constructor["_vueObj"];
+        if (_baseVue) {
+            //constructor["_vueObj"]  = 
+            target.constructor["_vueObj"] = {
+                computed: (_a = {},
+                    _a[name ? name : propertyKey] = function () {
+                        return this.vm[propertyKey];
+                    },
+                    _a),
+                extends: _baseVue
+            };
+        }
+        var _a;
+    };
+};
+>>>>>>> efd8649d64d38c3c8d85032eb005604f37e41dd0
