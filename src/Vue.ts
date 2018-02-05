@@ -99,7 +99,7 @@ export const vueTpl =
                               const _event = this.$props.vm.getEvent();
                               const me = this ;
                               _event.on("forceUpdate",function(){
-                                  alert("页面组件更新");
+                                 // alert("页面组件更新");
                                  // debugger ;
                                   me.$forceUpdate();
                               });
