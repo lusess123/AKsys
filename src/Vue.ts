@@ -147,6 +147,7 @@ export function  getTempVueName(vueProty : any,name ?:string){
           return _name ;
 }
 
+
 export const compute  =  function (name?:string ) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         const _baseVue = target.constructor["_vueObj"];
