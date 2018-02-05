@@ -59,3 +59,4 @@ export interface IPlugMeta {
     Author?: string;
 }
 export declare function PlugIn(plugMeta: IPlugMeta): (constructor: Function) => void;
+export declare function getType(baseClass: any, name: string): any;

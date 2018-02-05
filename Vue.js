@@ -9,6 +9,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 import Vue from 'vue';
 import * as core from "./Core";
 import * as util from "./Util";
+import event from "./event";
 var _com = function (h, name, tpl, pro, props) {
     var _vueObj = Vue.extend({
         name: name,
@@ -47,7 +48,7 @@ export var registAndGetVueComName = function (vm, vueObj) {
         return _name = "tempvuecom";
     }
     else {
-        debugger;
+        // debugger;
         if (vm["constructor"]) {
             _name = util.getFunName(vm["constructor"]);
         }
@@ -121,3 +122,11 @@ export var com = function (vue, comOpt) {
         }
     };
 };
+export function getTempVueName(vueProty, name) {
+    var _name = name;
+    if (!_name) {
+        _name = util.getFunName(vueProty);
+    }
+    _name = _name + event.getUniId();
+    return _name;
+}

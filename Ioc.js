@@ -153,3 +153,13 @@ export function PlugIn(plugMeta) {
         });
     };
 }
+export function getType(baseClass, name) {
+    var _list = Ioc.Current().GetTypeList("vue");
+    if (_list.length > 0) {
+        var _num = _list.findIndex(function (a) { return a.RegName.toLocaleLowerCase() == name.toLocaleLowerCase(); });
+        if (_num >= 0) {
+            return _list[_num].InstanceType;
+        }
+    }
+    return null;
+}

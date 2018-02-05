@@ -150,6 +150,16 @@ var BaseCom = /** @class */ (function () {
             this.$store.dispatch(name, obj);
         }
     };
+    Object.defineProperty(BaseCom.prototype, "xxx", {
+        get: function () {
+            return "123";
+        },
+        set: function (val) {
+            this.xxx = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
     BaseCom = __decorate([
         ioc.PlugIn({ BaseType: "ICom", RegName: "BaseCom" }),
         vue.com("\n<div>\n<Card>\n  <p slot=\"title\"   @click=\"vm.toogleShow()\"  >\n        <a>{{vm.getConstructName()}}   <Icon type=\"android-happy\" color=\"green\"></Icon>\n        </a>\n  </p>\n  <div   v-if=\"vm.fIsShow\"    >   {{vm.renderString()}} </div>\n</Card>\n</div>\n"),

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import * as core from "./Core";
 import * as util from "./Util";
+import event from "./event";
 
 
 const _com = function (h: any, name: string, tpl: string, pro: any, props: string[]) {
@@ -50,7 +51,7 @@ export const registAndGetVueComName = (vm, vueObj?) => {
         return _name = "tempvuecom";
     }
     else {
-        debugger;
+       // debugger;
         if(vm["constructor"]){
           _name = util.getFunName(vm["constructor"]);
         }
@@ -134,6 +135,15 @@ export const com = function (vue: any,comOpt:any = {} ) {
             }
         }
     }
+}
+
+export function  getTempVueName(vueProty : any,name ?:string){
+          let _name = name ;
+          if(!_name){
+                _name =   util.getFunName(vueProty);
+          }
+          _name = _name + event.getUniId();
+          return _name ;
 }
 
 

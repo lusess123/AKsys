@@ -186,5 +186,12 @@ export class BaseCom implements ICom {
         }
     }
 
+    get  xxx ():string {
+        return "123";
+    }
+    set xxx(val :string){
+        this.xxx = val ;
+    }
+
 
 }

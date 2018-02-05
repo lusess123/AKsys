@@ -59,4 +59,5 @@ export declare class BaseCom implements ICom {
      * @memberof BaseCom
      */
     dispatch(name: string, obj: any): void;
+    xxx: string;
 }
