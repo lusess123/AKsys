@@ -42,8 +42,8 @@ export const requestHook = (req, callback) => {
     }
 }
 
-export const json = (obj) => {
-    return JSON.stringify(obj);
+export const json = (obj,replacer?: (key: string, value: any) => any, space?: string | number) => {
+    return JSON.stringify(obj,replacer,space);
 }
 export const parseJson = (str) => {
     return JSON.parse(str);

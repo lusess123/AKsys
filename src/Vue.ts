@@ -2,6 +2,7 @@ import Vue from 'vue';
 import * as core from "./Core";
 import * as util from "./Util";
 import event from "./event";
+import * as $ from "jquery";
 
 
 const _com = function (h: any, name: string, tpl: string, pro: any, props: string[]) {
@@ -129,7 +130,52 @@ export const vueTpl =
                             };
                             _event.on("forceUpdate", this._forceUpdateFun);
                         }
+                        if (this.$props.MesgList) {
+                            const _msd = this.$props.MesgList;
+                           if(this.$el){
+                            if (this.$el) {
+                                var _$dom = this.$el;
+                                if (_$dom) {
+                                    _$dom
+                                        .on("mousedown", function (event) {
+                                            if (event["which"] == 3) {
+                                                event.stopPropagation();
+                                                var _$t = $(this);
+                                                if (!_$t.hasClass("acs-module-warning")) {
+                                                    $(this).addClass("acs-module-warning");
+                                                    var _lis = "";
+                                                    if (_msd.List) {
+                                                        _msd
+                                                            .List
+                                                            .forEach((l) => {
+                                                                _lis += ("<li>" + l + "</li>");
+                                                            });
+                                                    }
+            
+                                                    var _$p = $("<div class='acs-module-warninHg-content'><h5>" + _msd.Name + "</h5><div>" + (_msd.Content
+                                                        ? _msd.Content
+                                                        : "未知组件") + "</div><ul class='list'>" + _lis + "</ul></div>");
+            
+                                                    $("body").append(_$p);
+                                                    _$p.css({top: event.clientY, left: event.clientX});
+                                                    _$t.data("div", _$p);
+                                                } else {
+                                                    _$t.removeClass("acs-module-warning");
+                                                    _$t
+                                                        .data("div")
+                                                        .remove();
+                                                }
+            
+                                                return false;
+                                            }
+                                        });
+            
+                                }
+                            }
+                           }
+                        }
                     }
+                    
                 }
             }
 
