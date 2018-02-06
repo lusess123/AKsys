@@ -117,8 +117,8 @@ export var vueTpl = function (name, components, comOpt) {
                         };
                         _event.on("forceUpdate", this._forceUpdateFun);
                     }
-                    if (this.$props.MesgList) {
-                        var _msd_1 = this.$props.MesgList;
+                    if (this.$props.vm.MesgList) {
+                        var _msd_1 = this.$props.vm.MesgList;
                         if (this.$el) {
                             if (this.$el) {
                                 var _$dom = this.$el;

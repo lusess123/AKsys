@@ -130,8 +130,8 @@ export const vueTpl =
                             };
                             _event.on("forceUpdate", this._forceUpdateFun);
                         }
-                        if (this.$props.MesgList) {
-                            const _msd = this.$props.MesgList;
+                        if (this.$props.vm.MesgList) {
+                            const _msd = this.$props.vm.MesgList;
                            if(this.$el){
                             if (this.$el) {
                                 var _$dom = this.$el;
