@@ -134,7 +134,7 @@ export const vueTpl =
                             const _msd = this.$props.vm.MesgList;
                            if(this.$el){
                             if (this.$el) {
-                                var _$dom = this.$el;
+                                var _$dom = $(this.$el);
                                 if (_$dom) {
                                     _$dom
                                         .on("mousedown", function (event) {
