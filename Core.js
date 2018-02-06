@@ -33,8 +33,8 @@ export var requestHook = function (req, callback) {
         callback(_data);
     }
 };
-export var json = function (obj) {
-    return JSON.stringify(obj);
+export var json = function (obj, replacer, space) {
+    return JSON.stringify(obj, replacer, space);
 };
 export var parseJson = function (str) {
     return JSON.parse(str);

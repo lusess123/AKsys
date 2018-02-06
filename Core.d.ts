@@ -15,7 +15,7 @@ export declare const ErrorDesc: {
     PARAMS_INVALID: string;
 };
 export declare const requestHook: (req: any, callback: any) => void;
-export declare const json: (obj: any) => string;
+export declare const json: (obj: any, replacer?: (key: string, value: any) => any, space?: string | number) => string;
 export declare const parseJson: (str: any) => any;
 export declare const alert: (msg: any) => void;
 export declare const notify: (mesg: any) => void;

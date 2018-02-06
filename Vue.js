@@ -10,6 +10,7 @@ import Vue from 'vue';
 import * as core from "./Core";
 import * as util from "./Util";
 import event from "./event";
+import * as $ from "jquery";
 var _com = function (h, name, tpl, pro, props) {
     var _vueObj = Vue.extend({
         name: name,
@@ -65,6 +66,11 @@ export var vueTpl = function (name, components, comOpt) {
     return function (tpl) {
         //  const _vueObj = Vue.extend(
         var _vueOpt = {
+            data: function () {
+                return {
+                    _forceUpdateFun: null
+                };
+            },
             name: name,
             props: ["vm"],
             template: tpl,
@@ -81,18 +87,76 @@ export var vueTpl = function (name, components, comOpt) {
             beforeUpdate: function () {
                 this.vm.$store = this.$store;
             },
+            watch: {
+                vm: function (newVm) {
+                    if (newVm) {
+                        var _event = newVm.getEvent();
+                        var me_1 = this;
+                        if (this._forceUpdateFun) {
+                            _event.off("forceUpdate", this._forceUpdateFun);
+                        }
+                        this._forceUpdateFun = function () {
+                            me_1.$forceUpdate();
+                        };
+                        _event.on("forceUpdate", this._forceUpdateFun);
+                    }
+                }
+            },
             mounted: function () {
                 // alert("控件完成了");
                 this.vm.$store = this.$store;
                 if (this.$props.vm) {
                     if (this.$props.vm.getEvent) {
                         var _event = this.$props.vm.getEvent();
-                        var me_1 = this;
-                        _event.on("forceUpdate", function () {
-                            // alert("页面组件更新");
-                            // debugger ;
-                            me_1.$forceUpdate();
-                        });
+                        var me_2 = this;
+                        if (this._forceUpdateFun) {
+                            _event.off("forceUpdate", this._forceUpdateFun);
+                        }
+                        this._forceUpdateFun = function () {
+                            me_2.$forceUpdate();
+                        };
+                        _event.on("forceUpdate", this._forceUpdateFun);
+                    }
+                    if (this.$props.MesgList) {
+                        var _msd_1 = this.$props.MesgList;
+                        if (this.$el) {
+                            if (this.$el) {
+                                var _$dom = this.$el;
+                                if (_$dom) {
+                                    _$dom
+                                        .on("mousedown", function (event) {
+                                        if (event["which"] == 3) {
+                                            event.stopPropagation();
+                                            var _$t = $(this);
+                                            if (!_$t.hasClass("acs-module-warning")) {
+                                                $(this).addClass("acs-module-warning");
+                                                var _lis = "";
+                                                if (_msd_1.List) {
+                                                    _msd_1
+                                                        .List
+                                                        .forEach(function (l) {
+                                                        _lis += ("<li>" + l + "</li>");
+                                                    });
+                                                }
+                                                var _$p = $("<div class='acs-module-warninHg-content'><h5>" + _msd_1.Name + "</h5><div>" + (_msd_1.Content
+                                                    ? _msd_1.Content
+                                                    : "未知组件") + "</div><ul class='list'>" + _lis + "</ul></div>");
+                                                $("body").append(_$p);
+                                                _$p.css({ top: event.clientY, left: event.clientX });
+                                                _$t.data("div", _$p);
+                                            }
+                                            else {
+                                                _$t.removeClass("acs-module-warning");
+                                                _$t
+                                                    .data("div")
+                                                    .remove();
+                                            }
+                                            return false;
+                                        }
+                                    });
+                                }
+                            }
+                        }
                     }
                 }
             }
