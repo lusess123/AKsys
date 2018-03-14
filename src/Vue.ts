@@ -3,7 +3,12 @@ import * as core from "./Core";
 import * as util from "./Util";
 import event from "./event";
 import * as $ from "jquery";
+import basecomixin from "./vuemixin/basecom.vue"
 
+export const create = (options, name?: string) => {
+    if (name) options.name = name;
+    return options;
+}
 
 const _com = function (h: any, name: string, tpl: string, pro: any, props: string[]) {
     const _vueObj = Vue.extend({
@@ -26,13 +31,13 @@ export const tpl = h =>
 export const vm = (objPro: string) => {
 
     return `
-       <temple   v-if="vm.${objPro} && vm.${objPro}.render"  :is="vm.${objPro}.render()"  :vm="vm.${objPro}"></temple>
+       <temple   v-if="vm.${objPro} && vm.${objPro}.renderCom"  :is="vm.${objPro}.renderCom()"  :vm="vm.${objPro}"></temple>
    `;
 }
 
 
 export const registAndGetVueComName = (vm, vueObj?) => {
-    //debugger ;
+   // debugger ;
     if (!vueObj) {
         if (vm) {
             if (vm._VueObj) {
@@ -49,7 +54,7 @@ export const registAndGetVueComName = (vm, vueObj?) => {
     if (!vueObj) throw { error: "组件不能为空", vm: vm };
     let _name: string = "";
     if (!vueObj.name) {
-        return _name = "tempvuecom";
+         _name = "tempvuecom";
     }
     else {
         // debugger;
@@ -67,116 +72,20 @@ export const registAndGetVueComName = (vm, vueObj?) => {
 
 }
 
+
+
 export const vueTpl =
     (name: string, components?: any, comOpt?: any) =>
         (tpl: string) => {
 
             //  const _vueObj = Vue.extend(
             const _vueOpt = {
-                data(){
-                    return {
-                          _forceUpdateFun:null
-                    };
-                },
-                name: name,
-                props: ["vm"],
+
+                mixins: [basecomixin],
+
+               
                 template: tpl,
-                components: components,
-                renderError: (h: any, err) => {
-                    return h('pre', { title: err.stack, style: { color: 'red' } }, err.stack);
-                },
-                beforeCreated: function () {
-                    this.vm.$store = this.$store;
-                },
-
-                created: function () {
-                    this.vm.$store = this.$store;
-                },
-
-                beforeUpdate: function () {
-                    this.vm.$store = this.$store;
-                },
-
-                watch: {
-
-                    vm(newVm) {
-                        if (newVm) {
-                            const _event = newVm.getEvent();
-                            const me = this;
-                            if(this._forceUpdateFun){
-                                _event.off("forceUpdate", this._forceUpdateFun);
-                            }
-                            this._forceUpdateFun = ()=>{
-                                me.$forceUpdate();
-                            };
-                            _event.on("forceUpdate", this._forceUpdateFun);
-                        }
-                    }
-
-                },
-
-                mounted: function () {
-                    // alert("控件完成了");
-                    this.vm.$store = this.$store;
-                    if (this.$props.vm) {
-                        if (this.$props.vm.getEvent) {
-                            const _event = this.$props.vm.getEvent();
-                            const me = this;
-                            if(this._forceUpdateFun){
-                                _event.off("forceUpdate", this._forceUpdateFun);
-                            }
-                            this._forceUpdateFun = ()=>{
-                                me.$forceUpdate();
-                            };
-                            _event.on("forceUpdate", this._forceUpdateFun);
-                        }
-                        if (this.$props.vm.MesgList) {
-                            const _msd = this.$props.vm.MesgList;
-                           if(this.$el){
-                            if (this.$el) {
-                                var _$dom = $(this.$el);
-                                if (_$dom) {
-                                    _$dom
-                                        .on("mousedown", function (event) {
-                                            if (event["which"] == 3) {
-                                                event.stopPropagation();
-                                                var _$t = $(this);
-                                                if (!_$t.hasClass("acs-module-warning")) {
-                                                    $(this).addClass("acs-module-warning");
-                                                    var _lis = "";
-                                                    if (_msd.List) {
-                                                        _msd
-                                                            .List
-                                                            .forEach((l) => {
-                                                                _lis += ("<li>" + l + "</li>");
-                                                            });
-                                                    }
-            
-                                                    var _$p = $("<div class='acs-module-warninHg-content'><h5>" + _msd.Name + "</h5><div>" + (_msd.Content
-                                                        ? _msd.Content
-                                                        : "未知组件") + "</div><ul class='list'>" + _lis + "</ul></div>");
-            
-                                                    $("body").append(_$p);
-                                                    _$p.css({top: event.clientY, left: event.clientX});
-                                                    _$t.data("div", _$p);
-                                                } else {
-                                                    _$t.removeClass("acs-module-warning");
-                                                    _$t
-                                                        .data("div")
-                                                        .remove();
-                                                }
-            
-                                                return false;
-                                            }
-                                        });
-            
-                                }
-                            }
-                           }
-                        }
-                    }
-                    
-                }
+                components: components
             }
 
             comOpt = comOpt ? comOpt : {};
@@ -184,30 +93,45 @@ export const vueTpl =
             comOpt = { ..._vueOpt, ...comOpt };
 
             //  );
-            const _obj: any = Vue.extend(comOpt);
+            const _obj: any = comOpt;
             return _obj;
         }
 
 
 
-export const com = function (vue: any, comOpt: any = {}) {
+export const com = function (vue: any|string, comOpt: any = {}) {
     return function (constructor: Function) {
         //debugger ;
-        comOpt = { ...comOpt, ...{ extends: constructor["_vueObj"] } };
-        const components = comOpt.components;
+
+
         const _type = typeof (vue);
-        if (_type == "function")
+        if (_type == "function" || _type == "object") {
+            //直接设置组件
             constructor["_vueObj"] = vue;
+        }
         else {
-            if (_type == "string")
+            //如果是string
+           
+            comOpt = {    ...comOpt,  ...{ extends: constructor["_vueObj"] } };
+
+            if (!constructor["_vueObj"]) {
+                const components = comOpt.components;
                 constructor["_vueObj"] = vueTpl(util.getFunName(constructor) + core.getUniId(), components, comOpt)(vue);
-            else {
-                const _base = { name: "com" + core.getUniId(), props: ["vm"] };
-                constructor["_vueObj"] = Vue.extend({ ..._base, ...vue, ...comOpt });
             }
+            else {
+                const components = comOpt.components;
+                //constructor["_vueObj"].template = vue ;
+                constructor["_vueObj"] = { ...{ components:components,render:null,template: vue ,name:util.getFunName(constructor)+ core.getUniId()}, ...{ extends: comOpt } };
+            }
+
         }
     }
 }
+
+const _clearRender = function(vueObj){
+         
+}
+
 
 export function getTempVueName(vueProty: any, name?: string) {
     let _name = name;
@@ -238,6 +162,33 @@ export const compute = function (name?: string) {
 
         }
     };
+}
+
+
+
+const _createTplVue = function <T>(tpl, vm: T): T {
+    const _name = "tplVue" + event.getUniId();
+    Vue.component(_name, {
+        props: ["vm"],
+        template: tpl
+    });
+
+    // vm = { ...vm };
+    vm["renderCom"] = () => {
+        return _name;
+    }
+    return vm;
+};
+
+export const cvue = <T>(vm: T) =>
+    (tpl: string): T | IVueRender => {
+
+        return _createTplVue<T>(tpl, vm);
+    }
+
+
+export interface IVueRender {
+    renderCom(): string;
 }
 
 

@@ -1,18 +1,17 @@
-import * as rxjs  from "rxjs";
-import { IEvent ,IEventInfo,ISubiectOb } from "./IEvent";
+import * as rxjs from "rxjs";
+import { IEvent, IEventInfo, ISubiectOb } from "./IEvent";
 import Vue from "vue";
 
 
 
 export class EventBus {
     private fEmit: any = null;
-    public FetchEmit()
-    {
+    public FetchEmit() {
         // rxjs.
         if (!this.fEmit) {
-            this.fEmit =  new Vue();
+            this.fEmit = new Vue();
             //this.fEmit.setMaxListeners(0);
-           // this.fEmit.
+            // this.fEmit.
         }
         return this.fEmit;
     }
@@ -20,31 +19,36 @@ export class EventBus {
     public showAllEvent(): IEventInfo[] {
         var _res: IEventInfo[] = [];
         var _emit = this.fEmit;
-        if (_emit) {
-            var _rr = _emit[0];
-            var _objs = [];
-            for (var gg in _rr) {
-                _objs.push(gg);
+        if (_emit && _emit._events) {
+            const _events = _emit._events;
+            for (var n in _emit._events) {
+
+                const _funList: Function[] = _emit._events[n];
+                //if(_funList){
+                const _stringList = _funList? _funList.map((f) => {
+                    return f.toString();
+                }).join("|"):"";
+               // }
+
+                _res.push(
+                    {
+                        EventName: n,
+                        FunLength: _funList ? _funList.length : 0,
+                        EventObj: {},
+                        FunCodeList:_stringList
+                    });
             }
-            if (_objs.length > 0) {
-               
-                var _vv: any = _rr[_objs[0]];
-                var _eve = _vv.events;
-               
-                for (var _e in _eve) {
-                    _res.push({ EventName: _e, FunLength: _eve[_e].length, EventObj: _eve[_e] });
-                }
-            }
+
             return _res;
         }
-        
+
         return _res;
     }
 
 
 
     public constructor() {
-        this.ReactEvent = new BaseEvent(this,"React");
+        this.ReactEvent = new BaseEvent(this, "React");
         this.VmEvent = new BaseEvent(this, "Vm");
         this.HookEvent = new BaseEvent(this, "Hook");
         this.CustomEvent = new BaseEvent(this, "Custom");
@@ -55,8 +59,7 @@ export class EventBus {
     public HookEvent: IEvent;
     public CustomEvent: IEvent;
 
-    public RemoveReactEvent()
-    {
+    public RemoveReactEvent() {
 
     }
 }
@@ -72,7 +75,7 @@ export class BaseEvent implements IEvent {
 
     private fEventBus: EventBus;
 
-    public constructor(eventBus: EventBus,name:string) {
+    public constructor(eventBus: EventBus, name: string) {
         this.fEventBus = eventBus;
         this.fName = name;
     }
@@ -87,21 +90,20 @@ export class BaseEvent implements IEvent {
             return name;
     }
 
-    public showAllEvent(): IEventInfo[]
-    {
-       return this.fEventBus.showAllEvent();
+    public showAllEvent(): IEventInfo[] {
+        return this.fEventBus.showAllEvent();
     }
     public removeAllBusListeners() {
         this.fEventBus.FetchEmit().$off();
     }
 
-    public getSubjectByName(name: string):any {
+    public getSubjectByName(name: string): any {
         let event = this.createName(name);
         if (!this.fSubject) {
             this.fSubject = new rxjs.Subject<any>();
 
         }
-       return this.fSubject.filter(a => { return a.Name == event } );
+        return this.fSubject.filter(a => { return a.Name == event });
     }
 
     public emit(event: string, ...args: any[]): boolean {
@@ -109,10 +111,10 @@ export class BaseEvent implements IEvent {
         console.log("事件调用： " + event);
         console.log(args);
         if (this.fSubject) {
-           // this.fSubject = new rxjs.Subject<ISubiectOb>();
+            // this.fSubject = new rxjs.Subject<ISubiectOb>();
             this.fSubject.next({ Name: event, ArgList: args });
         }
-        
+
         this.fEventBus.FetchEmit().$emit(event, ...args);
         return true;
     };
@@ -125,7 +127,7 @@ export class BaseEvent implements IEvent {
         }
         else {
 
-         
+
 
             var _events = this.fEventBus.showAllEvent();
             _events.forEach((n) => {
@@ -143,7 +145,7 @@ export class BaseEvent implements IEvent {
     //};
     public listeners(event: string): Function[] {
         event = this.createName(event);
-       // return this.fEventBus.FetchEmit().
+        // return this.fEventBus.FetchEmit().
         alert("该接口未实现");
         return [];
     };

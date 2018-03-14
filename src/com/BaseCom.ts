@@ -4,6 +4,9 @@ import eventBus, { fetchEvent } from "./../event";
 import { IEvent } from "./../event/IEvent";
 import Vue from "vue";
 
+import basecomvue from "./../vuemixin/basecom.vue"
+
+
 export interface IBaseComConfig {
     UniId?: string;
 }
@@ -15,17 +18,7 @@ export interface IFunDic {
 
 
 @ioc.PlugIn({ BaseType: "ICom", RegName: "BaseCom" })
-@vue.com(`
-<div>
-<Card>
-  <p slot="title"   @click="vm.toogleShow()"  >
-        <a>{{vm.getConstructName()}}   <Icon type="android-happy" color="green"></Icon>
-        </a>
-  </p>
-  <div   v-if="vm.fIsShow"    >   {{vm.renderString()}} </div>
-</Card>
-</div>
-`)
+@vue.com(basecomvue)
 export class BaseCom implements ICom {
     $store: any;
     _VueObj: any;
@@ -36,11 +29,17 @@ export class BaseCom implements ICom {
     private fLoacalEventBus: IEvent;
 
     public constructor(config?: IBaseComConfig) {
+        this.bindMethod();
         if (config) {
             if (config.UniId) {
                 this.UniId = config.UniId;
             }
         }
+    }
+
+    protected bindMethod()
+    {
+
     }
 
     public forceUpdate() {
@@ -59,7 +58,9 @@ export class BaseCom implements ICom {
     }
 
     renderString() {
-        return core.json(this);
+         const _vm :any = this ;
+        // const _ff =  {..._vm}
+        return core.json({...{}, ... _vm, ...{$store:null},...{fLoacalEventBus:null} });
     }
 
     getConstructName() {
@@ -84,8 +85,26 @@ export class BaseCom implements ICom {
         }
     }
 
-    render(): string {
+    renderCom(): string {
         return vue.registAndGetVueComName(this, this.getVueObj())
+    }
+
+    private  comEventList = [] ;
+    public listenComEvent(name:string,fun:Function){
+        this.comEventList.push({name,fun});
+        this.getEvent().addListener(name,fun);
+        
+    }
+
+    protected emitComEvent(name:string, ...arg){
+        this.getEvent().emit(name,...arg);
+    }
+
+    public clearVueEvent(){
+        this.comEventList.forEach(a=>{
+                this.getEvent().off(a.name,a.fun);
+        });
+        this.comEventList = [] ;
     }
 
 
@@ -108,13 +127,16 @@ export class BaseCom implements ICom {
     }
 
     protected pRegisterModule(module: any) {
+       
         if (this.$store) {
-
+            
             if (this.$store.state[this.UniId]) {
-                core.alert("该模块已经注册过了");
+                core.alert("该模块${this.UniId}已经注册过了");
             }
-            else
+            else{
+               // alert("注册模块"+ this.UniId);
                 this.$store.registerModule(this.UniId, module)
+            }
         }
     }
 
@@ -122,6 +144,7 @@ export class BaseCom implements ICom {
         if (this.$store) {
             //unregisterModule
             if (this.$store.state[this.UniId]) {
+                //alert("卸载模块"+ this.UniId);
                 this.$store.unregisterModule(this.UniId);
             }
         }
@@ -141,10 +164,14 @@ export class BaseCom implements ICom {
      * @memberof BaseCom
      */
     getModuleState(){
+        //debugger;
         if(this.$store && this.$store.state[this.UniId]){
             return this.$store.state[this.UniId];
         } 
     }
+
+
+    
     /**
      * 获取计算属性
      * 

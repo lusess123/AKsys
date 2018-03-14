@@ -42,7 +42,11 @@ export const requestHook = (req, callback) => {
     }
 }
 
-export const json = (obj,replacer?: (key: string, value: any) => any, space?: string | number) => {
+
+
+export const json = (obj,replacer?: (key: string, value: any) => any , space?: string | number ) => {
+    replacer =replacer?replacer:null;
+    space = space ?space:2;
     return JSON.stringify(obj,replacer,space);
 }
 export const parseJson = (str) => {
@@ -124,3 +128,11 @@ export  let  Options = {
        //app :true 
     }
 };
+
+export function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}
