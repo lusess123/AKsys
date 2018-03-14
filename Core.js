@@ -34,6 +34,8 @@ export var requestHook = function (req, callback) {
     }
 };
 export var json = function (obj, replacer, space) {
+    replacer = replacer ? replacer : null;
+    space = space ? space : 2;
     return JSON.stringify(obj, replacer, space);
 };
 export var parseJson = function (str) {
@@ -95,3 +97,10 @@ export var Options = {
     IsDev: true,
     Point: {}
 };
+export function applyMixins(derivedCtor, baseCtors) {
+    baseCtors.forEach(function (baseCtor) {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}

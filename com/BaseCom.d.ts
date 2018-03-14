@@ -14,6 +14,7 @@ export declare class BaseCom implements ICom {
     protected AppEventFunDic: IFunDic;
     private fLoacalEventBus;
     constructor(config?: IBaseComConfig);
+    protected bindMethod(): void;
     forceUpdate(): void;
     getEvent(): IEvent;
     private toogleShow();
@@ -21,7 +22,11 @@ export declare class BaseCom implements ICom {
     getConstructName(): any;
     protected setRx(pro: string, obj?: any): void;
     getVueObj(): any;
-    render(): string;
+    renderCom(): string;
+    private comEventList;
+    listenComEvent(name: string, fun: Function): void;
+    protected emitComEvent(name: string, ...arg: any[]): void;
+    clearVueEvent(): void;
     protected listenAppEvent(name: string, uniId: string, fun: Function): void;
     protected emitAppEvent(name: string, sign: string, ...args: any[]): void;
     protected pRegisterModule(module: any): void;

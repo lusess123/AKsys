@@ -14,6 +14,7 @@ export interface IEventInfo {
     EventName: string;
     FunLength: number;
     EventObj: any;
+    FunCodeList?: string;
 }
 export interface ISubiectOb {
     Name: string;

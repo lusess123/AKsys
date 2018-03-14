@@ -20,18 +20,21 @@ var EventBus = /** @class */ (function () {
     EventBus.prototype.showAllEvent = function () {
         var _res = [];
         var _emit = this.fEmit;
-        if (_emit) {
-            var _rr = _emit[0];
-            var _objs = [];
-            for (var gg in _rr) {
-                _objs.push(gg);
-            }
-            if (_objs.length > 0) {
-                var _vv = _rr[_objs[0]];
-                var _eve = _vv.events;
-                for (var _e in _eve) {
-                    _res.push({ EventName: _e, FunLength: _eve[_e].length, EventObj: _eve[_e] });
-                }
+        if (_emit && _emit._events) {
+            var _events = _emit._events;
+            for (var n in _emit._events) {
+                var _funList = _emit._events[n];
+                //if(_funList){
+                var _stringList = _funList ? _funList.map(function (f) {
+                    return f.toString();
+                }).join("|") : "";
+                // }
+                _res.push({
+                    EventName: n,
+                    FunLength: _funList ? _funList.length : 0,
+                    EventObj: {},
+                    FunCodeList: _stringList
+                });
             }
             return _res;
         }

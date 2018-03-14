@@ -35,3 +35,4 @@ export declare let Options: {
     IsDev: boolean;
     Point: {};
 };
+export declare function applyMixins(derivedCtor: any, baseCtors: any[]): void;

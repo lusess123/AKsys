@@ -1,3 +1,11 @@
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,16 +18,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { core, ioc, vue, util } from "./../index";
 import eventBus, { fetchEvent } from "./../event";
 import Vue from "vue";
+import basecomvue from "./../vuemixin/basecom.vue";
 var BaseCom = /** @class */ (function () {
     function BaseCom(config) {
         this.fIsShow = false;
         this.AppEventFunDic = {};
+        this.comEventList = [];
+        this.bindMethod();
         if (config) {
             if (config.UniId) {
                 this.UniId = config.UniId;
             }
         }
     }
+    BaseCom.prototype.bindMethod = function () {
+    };
     BaseCom.prototype.forceUpdate = function () {
         this.getEvent().emit("forceUpdate");
     };
@@ -33,7 +46,9 @@ var BaseCom = /** @class */ (function () {
         this.fIsShow = !this.fIsShow;
     };
     BaseCom.prototype.renderString = function () {
-        return core.json(this);
+        var _vm = this;
+        // const _ff =  {..._vm}
+        return core.json(__assign({}, _vm, { $store: null }, { fLoacalEventBus: null }));
     };
     BaseCom.prototype.getConstructName = function () {
         // debugger ;
@@ -55,8 +70,27 @@ var BaseCom = /** @class */ (function () {
             }
         }
     };
-    BaseCom.prototype.render = function () {
+    BaseCom.prototype.renderCom = function () {
         return vue.registAndGetVueComName(this, this.getVueObj());
+    };
+    BaseCom.prototype.listenComEvent = function (name, fun) {
+        this.comEventList.push({ name: name, fun: fun });
+        this.getEvent().addListener(name, fun);
+    };
+    BaseCom.prototype.emitComEvent = function (name) {
+        var arg = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            arg[_i - 1] = arguments[_i];
+        }
+        (_a = this.getEvent()).emit.apply(_a, [name].concat(arg));
+        var _a;
+    };
+    BaseCom.prototype.clearVueEvent = function () {
+        var _this = this;
+        this.comEventList.forEach(function (a) {
+            _this.getEvent().off(a.name, a.fun);
+        });
+        this.comEventList = [];
     };
     BaseCom.prototype.listenAppEvent = function (name, uniId, fun) {
         var _fun = eventBus
@@ -79,16 +113,19 @@ var BaseCom = /** @class */ (function () {
     BaseCom.prototype.pRegisterModule = function (module) {
         if (this.$store) {
             if (this.$store.state[this.UniId]) {
-                core.alert("该模块已经注册过了");
+                core.alert("该模块${this.UniId}已经注册过了");
             }
-            else
+            else {
+                // alert("注册模块"+ this.UniId);
                 this.$store.registerModule(this.UniId, module);
+            }
         }
     };
     BaseCom.prototype.pUnRegisterModule = function () {
         if (this.$store) {
             //unregisterModule
             if (this.$store.state[this.UniId]) {
+                //alert("卸载模块"+ this.UniId);
                 this.$store.unregisterModule(this.UniId);
             }
         }
@@ -106,6 +143,7 @@ var BaseCom = /** @class */ (function () {
      * @memberof BaseCom
      */
     BaseCom.prototype.getModuleState = function () {
+        //debugger;
         if (this.$store && this.$store.state[this.UniId]) {
             return this.$store.state[this.UniId];
         }
@@ -162,7 +200,7 @@ var BaseCom = /** @class */ (function () {
     });
     BaseCom = __decorate([
         ioc.PlugIn({ BaseType: "ICom", RegName: "BaseCom" }),
-        vue.com("\n<div>\n<Card>\n  <p slot=\"title\"   @click=\"vm.toogleShow()\"  >\n        <a>{{vm.getConstructName()}}   <Icon type=\"android-happy\" color=\"green\"></Icon>\n        </a>\n  </p>\n  <div   v-if=\"vm.fIsShow\"    >   {{vm.renderString()}} </div>\n</Card>\n</div>\n"),
+        vue.com(basecomvue),
         __metadata("design:paramtypes", [Object])
     ], BaseCom);
     return BaseCom;
