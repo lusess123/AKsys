@@ -1,4 +1,4 @@
-export var getFunName = function (s) {
+export var getFunName = function (s)  {
     if (typeof s == "string")
         return s;
     s = s.toString();
