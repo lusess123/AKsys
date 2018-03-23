@@ -1,151 +1,155 @@
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "vue", "./Core", "./Util", "./event", "./vuemixin/basecom.vue"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    const vue_1 = require("vue");
-    const core = require("./Core");
-    const util = require("./Util");
-    const event_1 = require("./event");
-    const basecom_vue_1 = require("./vuemixin/basecom.vue");
-    exports.create = (options, name) => {
-        if (name)
-            options.name = name;
-        return options;
-    };
-    const _com = function (h, name, tpl, pro, props) {
-        const _vueObj = vue_1.default.extend({
-            name: name,
-            props: props,
-            template: tpl
-        });
-        vue_1.default.component(name, _vueObj);
-        return h(name, { props: { vm: pro } });
-    };
-    exports.tpl = h => (tpl, pro) => {
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var vue_1 = require("vue");
+var core = require("./Core");
+var util = require("./Util");
+var event_1 = require("./event");
+var basecom_vue_1 = require("./vuemixin/basecom.vue");
+exports.create = function (options, name) {
+    if (name)
+        options.name = name;
+    return options;
+};
+var _com = function (h, name, tpl, pro, props) {
+    var _vueObj = vue_1.default.extend({
+        name: name,
+        props: props,
+        template: tpl
+    });
+    vue_1.default.component(name, _vueObj);
+    return h(name, { props: { vm: pro } });
+};
+exports.tpl = function (h) {
+    return function (tpl, pro) {
         return _com(h, "tplName" + core.getUniId(), tpl, pro ? pro : {}, ["vm"]);
     };
-    exports.vm = (objPro) => {
-        return `
-       <temple   v-if="vm.${objPro} && vm.${objPro}.renderCom"  :is="vm.${objPro}.renderCom()"  :vm="vm.${objPro}"></temple>
-   `;
-    };
-    exports.registAndGetVueComName = (vm, vueObj) => {
-        // debugger ;
-        if (!vueObj) {
-            if (vm) {
-                if (vm._VueObj) {
-                    vueObj = vm._VueObj;
-                }
-                else {
-                    if (vm["constructor"]["_vueObj"]) {
-                        vueObj = vm["constructor"]["_vueObj"];
-                    }
-                }
-            }
-        }
-        if (!vueObj)
-            throw { error: "组件不能为空", vm: vm };
-        let _name = "";
-        if (!vueObj.name) {
-            _name = "tempvuecom";
-        }
-        else {
-            // debugger;
-            if (vm["constructor"]) {
-                _name = util.getFunName(vm["constructor"]);
+};
+exports.vm = function (objPro) {
+    return "\n       <temple   v-if=\"vm." + objPro + " && vm." + objPro + ".renderCom\"  :is=\"vm." + objPro + ".renderCom()\"  :vm=\"vm." + objPro + "\"></temple>\n   ";
+};
+exports.registAndGetVueComName = function (vm, vueObj) {
+    // debugger ;
+    if (!vueObj) {
+        if (vm) {
+            if (vm._VueObj) {
+                vueObj = vm._VueObj;
             }
             else {
-                _name = vueObj.name;
+                if (vm["constructor"]["_vueObj"]) {
+                    vueObj = vm["constructor"]["_vueObj"];
+                }
             }
         }
-        _name = _name + core.getUniId();
-        //Vue.component('FormType'+name,com);
-        vue_1.default.component(_name, vueObj);
-        return _name;
-    };
-    exports.vueTpl = (name, components, comOpt) => (tpl) => {
+    }
+    if (!vueObj)
+        throw { error: "组件不能为空", vm: vm };
+    var _name = "";
+    if (!vueObj.name) {
+        _name = "tempvuecom";
+    }
+    else {
+        // debugger;
+        if (vm["constructor"]) {
+            _name = util.getFunName(vm["constructor"]);
+        }
+        else {
+            _name = vueObj.name;
+        }
+    }
+    _name = _name + core.getUniId();
+    //Vue.component('FormType'+name,com);
+    vue_1.default.component(_name, vueObj);
+    return _name;
+};
+exports.vueTpl = function (name, components, comOpt) {
+    return function (tpl) {
         //  const _vueObj = Vue.extend(
-        const _vueOpt = {
+        var _vueOpt = {
             mixins: [basecom_vue_1.default],
             template: tpl,
             components: components
         };
         comOpt = comOpt ? comOpt : {};
-        comOpt = Object.assign({}, _vueOpt, comOpt);
+        comOpt = __assign({}, _vueOpt, comOpt);
         //  );
-        const _obj = comOpt;
+        var _obj = comOpt;
         return _obj;
     };
-    exports.com = function (vue, comOpt = {}) {
-        return function (constructor) {
-            //debugger ;
-            const _type = typeof (vue);
-            if (_type == "function" || _type == "object") {
-                //直接设置组件
-                constructor["_vueObj"] = vue;
+};
+exports.com = function (vue, comOpt) {
+    if (comOpt === void 0) { comOpt = {}; }
+    return function (constructor) {
+        //debugger ;
+        var _type = typeof (vue);
+        if (_type == "function" || _type == "object") {
+            //直接设置组件
+            constructor["_vueObj"] = vue;
+        }
+        else {
+            //如果是string
+            comOpt = __assign({}, comOpt, { extends: constructor["_vueObj"] });
+            if (!constructor["_vueObj"]) {
+                var components = comOpt.components;
+                constructor["_vueObj"] = exports.vueTpl(util.getFunName(constructor) + core.getUniId(), components, comOpt)(vue);
             }
             else {
-                //如果是string
-                comOpt = Object.assign({}, comOpt, { extends: constructor["_vueObj"] });
-                if (!constructor["_vueObj"]) {
-                    const components = comOpt.components;
-                    constructor["_vueObj"] = exports.vueTpl(util.getFunName(constructor) + core.getUniId(), components, comOpt)(vue);
-                }
-                else {
-                    const components = comOpt.components;
-                    //constructor["_vueObj"].template = vue ;
-                    constructor["_vueObj"] = Object.assign({ components: components, render: null, template: vue, name: util.getFunName(constructor) + core.getUniId() }, { extends: comOpt });
-                }
+                var components = comOpt.components;
+                //constructor["_vueObj"].template = vue ;
+                constructor["_vueObj"] = __assign({ components: components, render: null, template: vue, name: util.getFunName(constructor) + core.getUniId() }, { extends: comOpt });
             }
-        };
-    };
-    const _clearRender = function (vueObj) {
-    };
-    function getTempVueName(vueProty, name) {
-        let _name = name;
-        if (!_name) {
-            _name = util.getFunName(vueProty);
         }
-        _name = _name + event_1.default.getUniId();
-        return _name;
+    };
+};
+var _clearRender = function (vueObj) {
+};
+function getTempVueName(vueProty, name) {
+    var _name = name;
+    if (!_name) {
+        _name = util.getFunName(vueProty);
     }
-    exports.getTempVueName = getTempVueName;
-    exports.compute = function (name) {
-        return function (target, propertyKey, descriptor) {
-            const _baseVue = target.constructor["_vueObj"];
-            if (_baseVue) {
-                //constructor["_vueObj"]  = 
-                target.constructor["_vueObj"] = {
-                    computed: {
-                        [name ? name : propertyKey]: function () {
-                            return this.vm[propertyKey];
-                        }
+    _name = _name + event_1.default.getUniId();
+    return _name;
+}
+exports.getTempVueName = getTempVueName;
+exports.compute = function (name) {
+    return function (target, propertyKey, descriptor) {
+        var _baseVue = target.constructor["_vueObj"];
+        if (_baseVue) {
+            //constructor["_vueObj"]  = 
+            target.constructor["_vueObj"] = {
+                computed: (_a = {},
+                    _a[name ? name : propertyKey] = function () {
+                        return this.vm[propertyKey];
                     },
-                    extends: _baseVue
-                };
-            }
-        };
+                    _a),
+                extends: _baseVue
+            };
+        }
+        var _a;
     };
-    const _createTplVue = function (tpl, vm) {
-        const _name = "tplVue" + event_1.default.getUniId();
-        vue_1.default.component(_name, {
-            props: ["vm"],
-            template: tpl
-        });
-        // vm = { ...vm };
-        vm["renderCom"] = () => {
-            return _name;
-        };
-        return vm;
+};
+var _createTplVue = function (tpl, vm) {
+    var _name = "tplVue" + event_1.default.getUniId();
+    vue_1.default.component(_name, {
+        props: ["vm"],
+        template: tpl
+    });
+    // vm = { ...vm };
+    vm["renderCom"] = function () {
+        return _name;
     };
-    exports.cvue = (vm) => (tpl) => {
+    return vm;
+};
+exports.cvue = function (vm) {
+    return function (tpl) {
         return _createTplVue(tpl, vm);
     };
-});
+};
