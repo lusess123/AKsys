@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -7,8 +6,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-function applyNew(ctor, args) {
+export function applyNew(ctor, args) {
     if (args && args.length > 0) {
         return new (ctor.bind.apply(ctor, [void 0].concat(args)))();
         // }
@@ -17,7 +15,6 @@ function applyNew(ctor, args) {
         return new ctor();
     }
 }
-exports.applyNew = applyNew;
 var Ioc = /** @class */ (function () {
     function Ioc() {
         this.fInstanceClassList = {};
@@ -146,8 +143,8 @@ var Ioc = /** @class */ (function () {
     Ioc.fIoc = new Ioc();
     return Ioc;
 }());
-exports.Ioc = Ioc;
-function PlugIn(plugMeta) {
+export { Ioc };
+export function PlugIn(plugMeta) {
     return function (constructor) {
         Ioc.Current().RegisterType(plugMeta.RegName, plugMeta.BaseType, constructor, undefined, {
             Author: plugMeta.Author,
@@ -156,8 +153,7 @@ function PlugIn(plugMeta) {
         });
     };
 }
-exports.PlugIn = PlugIn;
-function getType(baseClass, name) {
+export function getType(baseClass, name) {
     var _list = Ioc.Current().GetTypeList("vue");
     if (_list.length > 0) {
         var _num = _list.findIndex(function (a) { return a.RegName.toLocaleLowerCase() == name.toLocaleLowerCase(); });
@@ -167,4 +163,3 @@ function getType(baseClass, name) {
     }
     return null;
 }
-exports.getType = getType;

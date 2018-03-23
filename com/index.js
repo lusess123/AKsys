@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var BaseCom = require("./BaseCom");
-var ICom = require("./ICom");
-exports.default = { BaseCom: BaseCom, ICom: ICom };
+import * as BaseCom from "./BaseCom";
+import * as ICom from "./ICom";
+export default { BaseCom: BaseCom, ICom: ICom };

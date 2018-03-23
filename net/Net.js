@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -42,59 +41,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
-var core = require("./../Core");
-var code_1 = require("./code");
+import axios from 'axios';
+import * as core from "./../Core";
+import HTTP_STATUS from "./code";
 /**
  * Created by nihilism on 03/06/2017.
  */
-var vue_1 = require("vue");
+import Vue from 'vue';
 //import axios from 'axios'
-var vue_axios_1 = require("vue-axios");
+import vueAxios from 'vue-axios';
 // load iview-ui components for notifying
-var iview_1 = require("iview");
+import iView from 'iview';
 // load config
 //import config from '@/requests/base'
 // load locale message template
 //import Message from '@/locale/zh_CN'
 // load http status config
 //import HTTP_STATUS from '@/requests/code'
-vue_1.default.use(vue_axios_1.default, axios_1.default);
-axios_1.default.defaults.baseURL = 'http://172.16.134.2:11536';
-axios_1.default.defaults.withCredentials = true;
-axios_1.default.defaults.timeout = 120000;
+Vue.use(vueAxios, axios);
+axios.defaults.baseURL = 'http://172.16.134.2:11536';
+axios.defaults.withCredentials = true;
+axios.defaults.timeout = 120000;
 // axios.defaults.xsrfCookieName = '_xsrf'
 // axios.defaults.xsrfHeaderName = 'X-Xsrftoken'
 // `onDownloadProgress` allows handling of progress events for download
-axios_1.default.defaults.onDownloadProgress = function (progressEvent) {
+axios.defaults.onDownloadProgress = function (progressEvent) {
     // Do whatever you want with the native progress event
 };
 // interceptor
-axios_1.default.interceptors.request.use(function (config) {
-    iview_1.default.LoadingBar.start();
+axios.interceptors.request.use(function (config) {
+    iView.LoadingBar.start();
     return config;
 }, function (error) {
     return Promise.reject(error);
 });
-axios_1.default.interceptors.response.use(function (resp) {
+axios.interceptors.response.use(function (resp) {
     // debugger ;
-    if (resp.data.code !== undefined && resp.data.code !== code_1.default.OK) {
-        iview_1.default.Message.error({
+    if (resp.data.code !== undefined && resp.data.code !== HTTP_STATUS.OK) {
+        iView.Message.error({
             content: resp.data.msg,
             closable: true,
             duration: 5
         });
-        iview_1.default.LoadingBar.finish();
+        iView.LoadingBar.finish();
         return Promise.reject(resp.data);
     }
-    iview_1.default.LoadingBar.finish();
+    iView.LoadingBar.finish();
     return resp;
 }, function (error) {
     //debugger ;
-    iview_1.default.LoadingBar.finish();
-    if (error.response.status === code_1.default.UNAUTHORIZED) {
-        iview_1.default.Message.warning({
+    iView.LoadingBar.finish();
+    if (error.response.status === HTTP_STATUS.UNAUTHORIZED) {
+        iView.Message.warning({
             content: "您未认证或者未登录，即将跳转到登录界面",
             duration: 1.5,
             onClose: function () { }
@@ -113,7 +111,7 @@ axios_1.default.interceptors.response.use(function (resp) {
                 errorText = '请求的api不存在';
                 break;
         }
-        iview_1.default.Message.error({
+        iView.Message.error({
             content: error.response.data.description || errorText,
             closable: true,
             duration: 5
@@ -132,11 +130,11 @@ var _ajax = function (_a) {
                         headers: { 'User-Name': 'zhangsan' }
                     };
                     if (!ispost) return [3 /*break*/, 2];
-                    return [4 /*yield*/, axios_1.default.post(url, params, _config)];
+                    return [4 /*yield*/, axios.post(url, params, _config)];
                 case 1:
                     _p1 = _b.sent();
                     return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, axios_1.default.get(url, __assign({}, params, _config))];
+                case 2: return [4 /*yield*/, axios.get(url, __assign({}, params, _config))];
                 case 3:
                     _p1 = _b.sent();
                     _b.label = 4;
@@ -148,7 +146,7 @@ var _ajax = function (_a) {
         });
     });
 };
-exports.post = function (_a) {
+export var post = function (_a) {
     var url = _a.url, params = _a.params;
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_b) {
@@ -159,7 +157,7 @@ exports.post = function (_a) {
         });
     });
 };
-exports.get = function (_a) {
+export var get = function (_a) {
     var url = _a.url, params = _a.params;
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_b) {

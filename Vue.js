@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -7,35 +6,34 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var vue_1 = require("vue");
-var core = require("./Core");
-var util = require("./Util");
-var event_1 = require("./event");
-var basecom_vue_1 = require("./vuemixin/basecom.vue");
-exports.create = function (options, name) {
+import Vue from 'vue';
+import * as core from "./Core";
+import * as util from "./Util";
+import event from "./event";
+import basecomixin from "./vuemixin/basecom.vue";
+export var create = function (options, name) {
     if (name)
         options.name = name;
     return options;
 };
 var _com = function (h, name, tpl, pro, props) {
-    var _vueObj = vue_1.default.extend({
+    var _vueObj = Vue.extend({
         name: name,
         props: props,
         template: tpl
     });
-    vue_1.default.component(name, _vueObj);
+    Vue.component(name, _vueObj);
     return h(name, { props: { vm: pro } });
 };
-exports.tpl = function (h) {
+export var tpl = function (h) {
     return function (tpl, pro) {
         return _com(h, "tplName" + core.getUniId(), tpl, pro ? pro : {}, ["vm"]);
     };
 };
-exports.vm = function (objPro) {
+export var vm = function (objPro) {
     return "\n       <temple   v-if=\"vm." + objPro + " && vm." + objPro + ".renderCom\"  :is=\"vm." + objPro + ".renderCom()\"  :vm=\"vm." + objPro + "\"></temple>\n   ";
 };
-exports.registAndGetVueComName = function (vm, vueObj) {
+export var registAndGetVueComName = function (vm, vueObj) {
     // debugger ;
     if (!vueObj) {
         if (vm) {
@@ -66,14 +64,14 @@ exports.registAndGetVueComName = function (vm, vueObj) {
     }
     _name = _name + core.getUniId();
     //Vue.component('FormType'+name,com);
-    vue_1.default.component(_name, vueObj);
+    Vue.component(_name, vueObj);
     return _name;
 };
-exports.vueTpl = function (name, components, comOpt) {
+export var vueTpl = function (name, components, comOpt) {
     return function (tpl) {
         //  const _vueObj = Vue.extend(
         var _vueOpt = {
-            mixins: [basecom_vue_1.default],
+            mixins: [basecomixin],
             template: tpl,
             components: components
         };
@@ -84,7 +82,7 @@ exports.vueTpl = function (name, components, comOpt) {
         return _obj;
     };
 };
-exports.com = function (vue, comOpt) {
+export var com = function (vue, comOpt) {
     if (comOpt === void 0) { comOpt = {}; }
     return function (constructor) {
         //debugger ;
@@ -98,7 +96,7 @@ exports.com = function (vue, comOpt) {
             comOpt = __assign({}, comOpt, { extends: constructor["_vueObj"] });
             if (!constructor["_vueObj"]) {
                 var components = comOpt.components;
-                constructor["_vueObj"] = exports.vueTpl(util.getFunName(constructor) + core.getUniId(), components, comOpt)(vue);
+                constructor["_vueObj"] = vueTpl(util.getFunName(constructor) + core.getUniId(), components, comOpt)(vue);
             }
             else {
                 var components = comOpt.components;
@@ -110,16 +108,15 @@ exports.com = function (vue, comOpt) {
 };
 var _clearRender = function (vueObj) {
 };
-function getTempVueName(vueProty, name) {
+export function getTempVueName(vueProty, name) {
     var _name = name;
     if (!_name) {
         _name = util.getFunName(vueProty);
     }
-    _name = _name + event_1.default.getUniId();
+    _name = _name + event.getUniId();
     return _name;
 }
-exports.getTempVueName = getTempVueName;
-exports.compute = function (name) {
+export var compute = function (name) {
     return function (target, propertyKey, descriptor) {
         var _baseVue = target.constructor["_vueObj"];
         if (_baseVue) {
@@ -137,8 +134,8 @@ exports.compute = function (name) {
     };
 };
 var _createTplVue = function (tpl, vm) {
-    var _name = "tplVue" + event_1.default.getUniId();
-    vue_1.default.component(_name, {
+    var _name = "tplVue" + event.getUniId();
+    Vue.component(_name, {
         props: ["vm"],
         template: tpl
     });
@@ -148,7 +145,7 @@ var _createTplVue = function (tpl, vm) {
     };
     return vm;
 };
-exports.cvue = function (vm) {
+export var cvue = function (vm) {
     return function (tpl) {
         return _createTplVue(tpl, vm);
     };

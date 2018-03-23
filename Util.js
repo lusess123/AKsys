@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getFunName = function (s) {
+export var getFunName = function (s) {
     if (typeof s == "string")
         return s;
     s = s.toString();
@@ -10,7 +8,7 @@ exports.getFunName = function (s) {
     else
         return "";
 };
-exports.sortBy = function (attr, rev) {
+export var sortBy = function (attr, rev) {
     //第二个参数k没有传递 默认升序排列
     if (rev == undefined) {
         rev = 1;
@@ -30,12 +28,11 @@ exports.sortBy = function (attr, rev) {
         return 0;
     };
 };
-function formatTimeFormCode(code, fmt) {
+export function formatTimeFormCode(code, fmt) {
     code = code * 1000;
     return formatDate(new Date(code), fmt);
 }
-exports.formatTimeFormCode = formatTimeFormCode;
-function formatDate(date, fmt) {
+export function formatDate(date, fmt) {
     var o = {
         'M+': date.getMonth() + 1,
         'd+': date.getDate(),
@@ -53,11 +50,9 @@ function formatDate(date, fmt) {
     }
     return fmt;
 }
-exports.formatDate = formatDate;
-function getTimeCodeFromDate(d) {
+export function getTimeCodeFromDate(d) {
     return Math.round(d.getTime() / 1000);
 }
-exports.getTimeCodeFromDate = getTimeCodeFromDate;
 var handleCircular = function () {
     var cache = [];
     var keyCache = [];
@@ -74,7 +69,7 @@ var handleCircular = function () {
     };
 };
 var tmp = JSON.stringify;
-exports.safeJson = function (value, replacer, space) {
+export var safeJson = function (value, replacer, space) {
     replacer = replacer || handleCircular();
     return tmp(value, replacer, space);
 };

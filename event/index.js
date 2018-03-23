@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vueEvent = require("./VueEvent");
+import * as vueEvent from "./VueEvent";
 var App = /** @class */ (function () {
     function App() {
     }
@@ -21,7 +19,7 @@ var App = /** @class */ (function () {
     App.fUniId = 0;
     return App;
 }());
-exports.fetchEvent = function () {
+export var fetchEvent = function () {
     return new vueEvent.EventBus().VmEvent;
 };
-exports.default = App;
+export default App;

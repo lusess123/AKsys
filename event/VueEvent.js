@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var rxjs = require("rxjs");
-var vue_1 = require("vue");
+import * as rxjs from "rxjs";
+import Vue from "vue";
 var EventBus = /** @class */ (function () {
     function EventBus() {
         this.fEmit = null;
@@ -13,7 +11,7 @@ var EventBus = /** @class */ (function () {
     EventBus.prototype.FetchEmit = function () {
         // rxjs.
         if (!this.fEmit) {
-            this.fEmit = new vue_1.default();
+            this.fEmit = new Vue();
             //this.fEmit.setMaxListeners(0);
             // this.fEmit.
         }
@@ -46,7 +44,7 @@ var EventBus = /** @class */ (function () {
     };
     return EventBus;
 }());
-exports.EventBus = EventBus;
+export { EventBus };
 var BaseEvent = /** @class */ (function () {
     function BaseEvent(eventBus, name) {
         this.fEventBus = eventBus;
@@ -146,4 +144,4 @@ var BaseEvent = /** @class */ (function () {
     };
     return BaseEvent;
 }());
-exports.BaseEvent = BaseEvent;
+export { BaseEvent };
