@@ -1,6 +1,6 @@
 {
-  "name": "aksys",
-  "version": "1.4.6",
+  "name": "@zyk2003xxx/aksys",
+  "version": "0.0.1-beta.1",
   "description": "前端框架的核心模块",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/lusess123/AKsys.git"
   },
-  "author": "zhengyukun@lvwan.com",
+  "author": "zyk2003xxx@163.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/lusess123/AKsys/issues"
