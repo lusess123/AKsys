@@ -1,3 +1,5 @@
+# 停更，转移到 https://github.com/lusess123/akvue/tree/master/packages/ak-lib-sys
+
 # 基于vue , vuex 的 前端平台的核心模块
 
 
